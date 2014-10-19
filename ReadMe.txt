@@ -1,8 +1,5 @@
-========================================================================
-       Embeder - Make an executable Windows-binary file from a PHP script
+Build embed console.
 
-       License : PHP License (http://www.php.net/license/3_0.txt)
-       Author : Eric Colinet <e dot colinet at laposte dot net>
-       http://wildphp.free.fr/wiki/doku?id=win32std:embeder
-========================================================================
-
+php.exe embeder2.php new embeder2
+php.exe embeder2.php main embeder2 embeder2.php
+php.exe embeder2.php add embeder2 out/console.exe out/console.exe
