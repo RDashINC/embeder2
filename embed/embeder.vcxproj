@@ -47,8 +47,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug console|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\php-sdk\phpdev\vc9\x86\main;C:\php-sdk\phpdev\vc9\x86\TSRM;C:\php-sdk\phpdev\vc9\x86\Zend;C:\php-sdk\phpdev\vc9\x86\ext\standard;C:\php-sdk\phpdev\vc9\x86\sapi\embed;C:\php-sdk\phpdev\vc9\x86;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\php-sdk\phpdev\vc9\x86\Release_TS;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\rainbowdashdc\Desktop\php-5.6.2\main;C:\Users\rainbowdashdc\Desktop\php-5.6.2\TSRM;C:\Users\rainbowdashdc\Desktop\php-5.6.2\Zend;C:\Users\rainbowdashdc\Desktop\php-5.6.2\ext\standard;C:\Users\rainbowdashdc\Desktop\php-5.6.2\sapi\embed;C:\Users\rainbowdashdc\Desktop\php-5.6.2;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\rainbowdashdc\Desktop\php-5.6.2\Release_TS;$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release console|Win32'">
     <ClCompile>
@@ -89,7 +91,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug console|Win32'">
     <ClCompile>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <Optimization>Full</Optimization>
@@ -121,9 +123,28 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <OutputFile>out/console_debug.exe</OutputFile>
       <AdditionalDependencies>php5embed.lib;php5ts.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ShowProgress>LinkVerbose</ShowProgress>
+      <Version>
+      </Version>
+      <LinkStatus>true</LinkStatus>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <AdditionalManifestDependencies>type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*';type='win32' name='Microsoft.VC90.CRT' version='9.0.21022.8' processorArchitecture='*' publicKeyToken='1fc8b3b9a1e18e3b';%(AdditionalManifestDependencies)</AdditionalManifestDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+    <Manifest>
+      <InputResourceManifests>
+      </InputResourceManifests>
+      <AdditionalManifestFiles>
+      </AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="embeder.cpp" />
@@ -138,11 +159,13 @@
     <Image Include="res\php.ico" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="php-embed.ini" />
     <CustomBuild Include="res\run.php" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

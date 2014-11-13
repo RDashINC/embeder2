@@ -1,5 +1,4 @@
 IF NOT EXIST "../out" (
 	MD "..\out"
 )
-
-COPY "out\console_debug.exe" "..\out\console.exe"
+COPY "Debug console\embeder.exe" "..\out\console.exe"

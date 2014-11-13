@@ -22,6 +22,7 @@ int main(int argc, char** argv) {
 	int exit_status;
 	char *eval_string= "include 'res:///PHP/RUN';";
 
+	/* Start PHP embed */
 	php_embed_init(argc, argv PTSRMLS_CC);
 	zend_first_try {
 		PG(during_request_startup) = 0;
@@ -32,13 +33,19 @@ int main(int argc, char** argv) {
 		/* Execute */
 		zend_eval_string(eval_string, &ret_value, "main" TSRMLS_CC);
 
+		/* Get Exit Status */
 		exit_status= Z_LVAL(ret_value);
 	}
+
+	/* Catch Exit status */
 	zend_catch {
 		exit_status = EG(exit_status);
 	}
 	zend_end_try();
+
+	/* Stop PHP embed */
 	php_embed_shutdown(TSRMLS_C);
 
+	/* Return exit status */
 	return exit_status;
 }
