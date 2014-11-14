@@ -8,7 +8,9 @@
 //       http://wildphp.free.fr/wiki/doku?id=win32std:embeder
 //========================================================================
 
+/** Base file for "empty" consoles **/
+
 echo basename($argv[0])." - Powered by PHP version ".phpversion()."\n";
-echo "Empty base binary, did you make sure too add a php file via embeder2 main ".basename($argv[0])."phpfile.php";
+echo "Empty base binary, did you make sure too add a php file via 'embeder2 main ".basename($argv[0])." phpfile.php'?\n";
 
 ?>

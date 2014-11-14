@@ -19,10 +19,14 @@
  *
  */
 
+/* Banner */
+function banner() {
+	echo strtolower(basename($_SERVER['argv'][0]))." ".(defined('EMBEDED')?'(embeded) ':'').'- Powered by PHP version '.phpversion()."\n";
+}
 
 /* Exit function */
 function err($txt) {
-	echo ucfirst(basename($_SERVER['argv'][0]))." ".(defined('EMBEDED')?'(embeded) ':'').'- Powered by PHP version '.phpversion()."\n";
+	banner();
 	die($txt."\n");
 }
 
@@ -31,7 +35,7 @@ function _f($file, $force=false) { return $force||defined('EMBEDED')?'res:///PHP
 
 /* Check if win32std is loaded */
 if(!extension_loaded('win32std')) {
-	err("I need win32std !");
+	err("win32std not found.");
 }
 
 /* Conf */
@@ -39,12 +43,12 @@ define('EMBEDER_BASE_EXE_PATH', 'out/');
 
 /* Action list */
 $actions = array(
-	'new'      => array('new_file', array('name')),
-	'main'     => array('add_main', array('name', 'file')),
-	'add'      => array('add_file', array('name', 'file','link')),
-	'manifest' => array('add_manifest', array('name', 'file')),
-	'list'     => array('display_list', array('name')),
-	'view'     => array('display_resource', array('name', 'section', 'value', 'lang')),
+	'new'  => array('new_file',         array('name'),                             "Create Base EXE"),
+	'main' => array('add_main',         array('name', 'file'),                     "Add main PHP file to exe"),
+	'add'  => array('add_file',         array('name', 'file','link'),              "Add file to exe"),
+	'type' => array('change_type',      array('name', 'type'),                     "Change EXE type."),
+	'list' => array('display_list',     array('name'),                             "List contents of EXE"),
+	'view' => array('display_resource', array('name', 'section', 'value', 'lang'), "View EXE file content"),
 );
 
 /* Action functions */
@@ -68,11 +72,49 @@ function add_file($name, $file, $link) {
 	update_resource($exe, 'PHP', md5($link), file_get_contents($file));
 }
 
-/* Requires custom embeder version, 2.0.1 */
-function add_manifest($name, $file) {
-	$exe= ".\\{$name}.exe";
-	check_exe($exe);
-	update_resource($exe, 24, 1, file_get_contents($file), 1033);
+function change_type($name, $type) {
+    $exe = ".\\{$name}.exe";
+    $types = array('CONSOLE', 'WINDOWS');
+    
+    /* Check if EXE exists */
+    check_exe($exe);
+    
+    /* Check TYPE paramater */
+    if(!in_array($new_format= strtoupper($type), $types)) {
+        err("Type not supported");
+    }
+    
+    /* Open file handle in r+b mode */
+    $f = fopen($exe, 'r+b');
+    
+    /* Change EXE type */
+    $type_record = unpack('Smagic/x58/Loffset', fread($f, 32*4));
+    if($type_record['magic'] != 0x5a4d ) {
+        err("Not an MSDOS executable file");
+    }
+    if(fseek($f, $type_record['offset'], SEEK_SET) != 0) {
+        err("Seeking error (+{$type_record['offset']})");
+    }
+    
+    // PE Record
+    $pe_record = unpack('Lmagic/x16/Ssize', fread($f, 24));
+    if($pe_record['magic'] != 0x4550 ) {
+        err("PE header not found");
+    }
+    if($pe_record['size'] != 224 ) {
+        err("Optional header not in NT32 format");
+    }
+    if(fseek($f, $type_record['offset']+24+68, SEEK_SET) != 0) {
+        err("Seeking error (+{$type_record['offset']})");
+    }
+    if(fwrite($f, pack('S', $new_format=='CONSOLE'?3:2))===false) {
+        err("Write error");
+    }
+    
+    /* Close file handle */
+    fclose($f);
+
+    echo "File type changed too '".$new_format."'";
 }
 
 function update_resource($file, $section, $name, $data, $lang=null) {
@@ -130,16 +172,50 @@ function display_resource($name, $section, $value, $lang=null) {
 }
 
 /* Run specified action */
-if( !isset($argv[1]) ) err( "Please specify something to do.\nUsage: {$argv[0]} action [params...]\nWhere action can be: ".implode(', ', array_keys($actions))."\n");
-foreach( $actions as $k => $v ) {
-	if( $k==$argv[1] ) {
-		$params= $argv;
+if( !isset($argv[1]) ) {
+	banner();
+
+	echo "Usage: {$argv[0]} action [params...]\n";
+	echo "Available commands:\n";
+	/* Print out arrays, then get last object for "description" */
+	foreach($actions as $k => $v) {
+        $i=0;
+        $cl = strlen($k);
+        $cld = 11-$cl;
+        $pdesc = $v[2];
+        $pcount = count($v[1]);
+        
+        /* Print out num args, command, desc */
+        echo " {$k}";
+        while($i!==$cld) {
+            $i=$i+1;
+            echo " ";
+        }
+        echo "{$pdesc}\n";
+	}
+    
+    die();
+}
+
+foreach($actions as $k => $v ) {
+	if($k==$argv[1]) {
+		$params = $argv;
+
+		/* Shift ARRAY */
 		array_shift($params);
 		array_shift($params);
-		if( count($params) != count($v[1]) ) err("Bad number of parameters, '$k' needs: ".implode(", ", $v[1]));
+
+		/* Count Param number */
+		if(count($params) != count($v[1])) {
+			err("Bad number of parameters, '$k' needs: ".implode(", ", $v[1]));
+		}
+
+		/* Call Function */
 		call_user_func_array($v[0], $params);
+
+		/* Exit with zero code */
 		exit(0);
 	}
 }
-err("Unknown action '{$argv[1]}'");
+err("Unknown command '{$argv[1]}'");
 ?>
