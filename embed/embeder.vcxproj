@@ -48,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug console|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>..\..\php-src\main;..\..\php-src\TSRM;..\..\php-src\Zend;..\..\php-src\ext\standard;..\..\php-src\sapi\embed;..\..\php-src;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\rainbowdashdc\Desktop\php-5.6.2\Release_TS;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\..\php-src\Release_TS;$(LibraryPath)</LibraryPath>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
