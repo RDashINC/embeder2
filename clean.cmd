@@ -1,8 +1,14 @@
 @echo off
-rm -rf out/*
-rm -rf embed/Debug_console
-rm -rf "embed/Debug console"
-rm -rf embed/out
+
+rm -rf out/
+rm -rf src/Debug_console
+
+rm -rf "src/Debug console"
+
+rm -rf src/out src/res/Thumbs.db
+
 rm -rf embeder2.exe
-rm -rf php.exe
-rm -rf php5ts.dll
+
+rm -rf *.exe
+
+rm -rf *.dll

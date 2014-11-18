@@ -1,3 +1,6 @@
-embed/*.sdf
+src/*.sdf
+src/*.suo
+
 out/
-embed/Debug console
+
+src/Debug console
