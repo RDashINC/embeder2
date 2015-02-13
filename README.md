@@ -32,7 +32,7 @@ Libraries: `Project > embeder Properties > Configuration Properties > VC++ Direc
 
 ### How do I add extensions?
 
-Modify `phpembed.ini`
+Modify `php-embed.ini`
      
     [PHP]
     extensions_dir=./
