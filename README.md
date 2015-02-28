@@ -7,7 +7,7 @@ From there is uses `win32std` to access a PHP file and run it from it's internal
 
 Currently, there is one *major* limitation: It does not embed PHP *completely*, rather it ouputs PHP into a DLL, as of now called php5ts.dll
 
-This is the same for extensions, shared ones must be loaded via phpembed.ini
+This is the same for extensions, shared ones must be loaded via `php-embed.ini`
 
 ## Compiliation Requirements
 You'll need:
@@ -35,7 +35,7 @@ Libraries: `Project > embeder Properties > Configuration Properties > VC++ Direc
 Modify `php-embed.ini`
      
     [PHP]
-    extensions_dir=./
+    extensions_dir='./'
     extension=php_someextension.dll
 
 ### I get afxres.h not found!
