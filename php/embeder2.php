@@ -12,7 +12,7 @@
  * embeder2.1 - add file function has third parameter defining resource path
  *
  * (c) 2006 by frantik
- * (c) 2014 by RainbowDashDC 
+ * (c) 2016 Jared Allard <jaredallard@outlook.com>
  *
  * http://wiki.swiftlytilting.com/phc-win
  * http://github.com/RDashINC/embeder2
